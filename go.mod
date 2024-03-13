@@ -5,8 +5,8 @@ go 1.21.7
 require (
 	github.com/MarinX/keylogger v0.0.0-20210528193429-a54d7834cc1a
 	github.com/go-vgo/robotgo v0.110.0
-	github.com/robotn/xgb v0.0.0-20190912153532-2cb92d044934
 	github.com/robotn/xgbutil v0.0.0-20190912154524-c861d6f87770
+	github.com/sanity-io/litter v1.5.5
 )
 
 require (
@@ -18,6 +18,7 @@ require (
 	github.com/lxn/win v0.0.0-20210218163916-a377121e959e // indirect
 	github.com/otiai10/gosseract v2.2.1+incompatible // indirect
 	github.com/power-devops/perfstat v0.0.0-20221212215047-62379fc7944b // indirect
+	github.com/robotn/xgb v0.0.0-20190912153532-2cb92d044934 // indirect
 	github.com/shirou/gopsutil/v3 v3.23.8 // indirect
 	github.com/shoenig/go-m1cpu v0.1.6 // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect

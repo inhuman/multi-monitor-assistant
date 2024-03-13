@@ -50,13 +50,11 @@ github.com/robotn/xgb/xproto
 ## explicit; go 1.13
 github.com/robotn/xgbutil
 github.com/robotn/xgbutil/ewmh
-github.com/robotn/xgbutil/icccm
-github.com/robotn/xgbutil/keybind
-github.com/robotn/xgbutil/mousebind
 github.com/robotn/xgbutil/xevent
 github.com/robotn/xgbutil/xprop
-github.com/robotn/xgbutil/xrect
-github.com/robotn/xgbutil/xwindow
+# github.com/sanity-io/litter v1.5.5
+## explicit; go 1.16
+github.com/sanity-io/litter
 # github.com/shirou/gopsutil/v3 v3.23.8
 ## explicit; go 1.15
 github.com/shirou/gopsutil/v3/common
