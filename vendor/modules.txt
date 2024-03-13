@@ -1,0 +1,102 @@
+# github.com/MarinX/keylogger v0.0.0-20210528193429-a54d7834cc1a
+## explicit; go 1.14
+github.com/MarinX/keylogger
+# github.com/gen2brain/shm v0.0.0-20230802011745-f2460f5984f7
+## explicit
+github.com/gen2brain/shm
+# github.com/go-ole/go-ole v1.3.0
+## explicit; go 1.12
+github.com/go-ole/go-ole
+github.com/go-ole/go-ole/oleutil
+# github.com/go-vgo/robotgo v0.110.0
+## explicit; go 1.17
+github.com/go-vgo/robotgo
+github.com/go-vgo/robotgo/base
+github.com/go-vgo/robotgo/clipboard
+github.com/go-vgo/robotgo/key
+github.com/go-vgo/robotgo/mouse
+github.com/go-vgo/robotgo/screen
+github.com/go-vgo/robotgo/window
+# github.com/jezek/xgb v1.1.0
+## explicit; go 1.11
+github.com/jezek/xgb
+github.com/jezek/xgb/shm
+github.com/jezek/xgb/xinerama
+github.com/jezek/xgb/xproto
+# github.com/kbinani/screenshot v0.0.0-20230812210009-b87d31814237
+## explicit; go 1.17
+github.com/kbinani/screenshot
+github.com/kbinani/screenshot/internal/util
+github.com/kbinani/screenshot/internal/xwindow
+# github.com/lufia/plan9stats v0.0.0-20230326075908-cb1d2100619a
+## explicit; go 1.16
+github.com/lufia/plan9stats
+# github.com/lxn/win v0.0.0-20210218163916-a377121e959e
+## explicit; go 1.12
+github.com/lxn/win
+# github.com/otiai10/gosseract v2.2.1+incompatible
+## explicit
+github.com/otiai10/gosseract
+# github.com/power-devops/perfstat v0.0.0-20221212215047-62379fc7944b
+## explicit; go 1.14
+github.com/power-devops/perfstat
+# github.com/robotn/xgb v0.0.0-20190912153532-2cb92d044934
+## explicit; go 1.13
+github.com/robotn/xgb
+github.com/robotn/xgb/shape
+github.com/robotn/xgb/xinerama
+github.com/robotn/xgb/xproto
+# github.com/robotn/xgbutil v0.0.0-20190912154524-c861d6f87770
+## explicit; go 1.13
+github.com/robotn/xgbutil
+github.com/robotn/xgbutil/ewmh
+github.com/robotn/xgbutil/icccm
+github.com/robotn/xgbutil/keybind
+github.com/robotn/xgbutil/mousebind
+github.com/robotn/xgbutil/xevent
+github.com/robotn/xgbutil/xprop
+github.com/robotn/xgbutil/xrect
+github.com/robotn/xgbutil/xwindow
+# github.com/shirou/gopsutil/v3 v3.23.8
+## explicit; go 1.15
+github.com/shirou/gopsutil/v3/common
+github.com/shirou/gopsutil/v3/cpu
+github.com/shirou/gopsutil/v3/internal/common
+github.com/shirou/gopsutil/v3/mem
+github.com/shirou/gopsutil/v3/net
+github.com/shirou/gopsutil/v3/process
+# github.com/shoenig/go-m1cpu v0.1.6
+## explicit; go 1.20
+github.com/shoenig/go-m1cpu
+# github.com/tklauser/go-sysconf v0.3.12
+## explicit; go 1.13
+github.com/tklauser/go-sysconf
+# github.com/tklauser/numcpus v0.6.1
+## explicit; go 1.13
+github.com/tklauser/numcpus
+# github.com/vcaesar/gops v0.30.2
+## explicit; go 1.17
+github.com/vcaesar/gops
+# github.com/vcaesar/imgo v0.40.0
+## explicit; go 1.17
+github.com/vcaesar/imgo
+# github.com/vcaesar/keycode v0.10.1
+## explicit; go 1.17
+github.com/vcaesar/keycode
+# github.com/vcaesar/tt v0.20.0
+## explicit; go 1.13
+github.com/vcaesar/tt
+# github.com/yusufpapurcu/wmi v1.2.3
+## explicit; go 1.16
+github.com/yusufpapurcu/wmi
+# golang.org/x/image v0.12.0
+## explicit; go 1.12
+golang.org/x/image/bmp
+golang.org/x/image/ccitt
+golang.org/x/image/tiff
+golang.org/x/image/tiff/lzw
+# golang.org/x/sys v0.12.0
+## explicit; go 1.17
+golang.org/x/sys/internal/unsafeheader
+golang.org/x/sys/unix
+golang.org/x/sys/windows
