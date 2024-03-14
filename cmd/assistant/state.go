@@ -5,7 +5,8 @@ import (
 	"github.com/MarinX/keylogger"
 	"github.com/go-vgo/robotgo"
 	"github.com/sanity-io/litter"
-	"strings"
+	"log"
+	"slices"
 )
 
 const keyboard = "/dev/input/by-path/pci-0000:00:14.0-usb-0:3:1.0-event-kbd"
@@ -60,8 +61,21 @@ const (
 	KeyReleased KeyState = 2
 )
 
+type KeysState map[uint16]KeyState
+
+func (ks KeysState) slice() []uint16 {
+	var sl []uint16
+	for code := range ks {
+		sl = append(sl, code)
+	}
+
+	return sl
+}
+
 type CurrentCombinationKeys struct {
-	keys map[uint16]KeyState
+	combinationStarted bool
+	keys               KeysState
+	presets            []CombinationPreset
 }
 
 func NewCurrentCombinationKeys() *CurrentCombinationKeys {
@@ -70,35 +84,68 @@ func NewCurrentCombinationKeys() *CurrentCombinationKeys {
 	}
 }
 
+func (cck *CurrentCombinationKeys) AddPresets(presets []CombinationPreset) {
+	cck.presets = presets
+}
+
 func (cck *CurrentCombinationKeys) SetPressed(keyCode uint16) {
-	//fmt.Println("pressed", keyToString(keyCode))
-	cck.keys[keyCode] = KeyPressed
+	if isControlKey(keyCode) {
+		cck.combinationStarted = true
+	}
+
+	if cck.combinationStarted {
+		cck.keys[keyCode] = KeyPressed
+
+	}
+
 }
 
 func (cck *CurrentCombinationKeys) SetReleased(keyCode uint16) {
-	//fmt.Println("released", keyToString(keyCode))
 	cck.keys[keyCode] = KeyReleased
 
-	if isControlKey(keyCode) {
-		//fmt.Println("detected control key released")
-		cck.PrintCurrentCombination()
-		cck.Flush()
+	preset, isPreset := cck.IsPreset()
+	if isPreset {
+		log.Println("fired:", preset.Name)
+		err := preset.Action()
+		if err != nil {
+			log.Printf("error doing action '%s': %s", preset.Name, err.Error())
+		}
 	}
+
+	cck.Flush()
+}
+
+func (cck *CurrentCombinationKeys) IsPreset() (CombinationPreset, bool) {
+	for _, preset := range cck.presets {
+		if preset.IsEqual(cck.keys) {
+			return preset, true
+		}
+	}
+
+	return CombinationPreset{}, false
 }
 
 func (cck *CurrentCombinationKeys) Flush() {
-	cck.keys = make(map[uint16]KeyState)
-}
+	//log.Printf("state: %+v\n", *cck)
 
-func (cck *CurrentCombinationKeys) PrintCurrentCombination() {
-	combStr := strings.Builder{}
-
-	for keyCode := range cck.keys {
-		combStr.WriteString(fmt.Sprintf("%s ", keyToString(keyCode)))
+	for key, status := range cck.keys {
+		if status == KeyReleased {
+			delete(cck.keys, key)
+		}
 	}
 
-	fmt.Println("combination", combStr.String())
+	cck.combinationStarted = false
 }
+
+//func (cck *CurrentCombinationKeys) PrintCurrentCombination() {
+//	combStr := strings.Builder{}
+//
+//	for keyCode := range cck.keys {
+//		combStr.WriteString(fmt.Sprintf("%s ", keyToString(keyCode)))
+//	}
+//
+//	fmt.Println("combination", combStr.String())
+//}
 
 var controlKeys = [...]uint16{
 	29,  //  "L_CTRL"
@@ -120,6 +167,45 @@ func isControlKey(keyCode uint16) bool {
 	return false
 }
 
+func (cck *CurrentCombinationKeys) isLastControlKeyReleased() bool {
+	for key, status := range cck.keys {
+		if isControlKey(key) && status == KeyPressed {
+			return false
+		}
+	}
+
+	return true
+}
+
 func keyToString(keyCode uint16) string {
 	return (&keylogger.InputEvent{Code: keyCode}).KeyString()
+}
+
+type CombinationPreset struct {
+	Codes  []uint16
+	Action ShortcutAction
+	Name   string
+}
+
+type ShortcutAction func() error
+
+func (cp CombinationPreset) IsEqual(currentCombination KeysState) bool {
+	slices.Sort(cp.Codes)
+
+	codes := currentCombination.slice()
+	slices.Sort(codes)
+
+	return equal(codes, cp.Codes)
+}
+
+func equal(a, b []uint16) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i, v := range a {
+		if v != b[i] {
+			return false
+		}
+	}
+	return true
 }

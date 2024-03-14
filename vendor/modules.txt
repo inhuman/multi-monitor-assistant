@@ -1,6 +1,9 @@
 # github.com/MarinX/keylogger v0.0.0-20210528193429-a54d7834cc1a
 ## explicit; go 1.14
 github.com/MarinX/keylogger
+# github.com/davecgh/go-spew v1.1.1
+## explicit
+github.com/davecgh/go-spew/spew
 # github.com/gen2brain/shm v0.0.0-20230802011745-f2460f5984f7
 ## explicit
 github.com/gen2brain/shm
@@ -37,6 +40,9 @@ github.com/lxn/win
 # github.com/otiai10/gosseract v2.2.1+incompatible
 ## explicit
 github.com/otiai10/gosseract
+# github.com/pmezard/go-difflib v1.0.0
+## explicit
+github.com/pmezard/go-difflib/difflib
 # github.com/power-devops/perfstat v0.0.0-20221212215047-62379fc7944b
 ## explicit; go 1.14
 github.com/power-devops/perfstat
@@ -66,6 +72,9 @@ github.com/shirou/gopsutil/v3/process
 # github.com/shoenig/go-m1cpu v0.1.6
 ## explicit; go 1.20
 github.com/shoenig/go-m1cpu
+# github.com/stretchr/testify v1.8.4
+## explicit; go 1.20
+github.com/stretchr/testify/assert
 # github.com/tklauser/go-sysconf v0.3.12
 ## explicit; go 1.13
 github.com/tklauser/go-sysconf
@@ -98,3 +107,6 @@ golang.org/x/image/tiff/lzw
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
+# gopkg.in/yaml.v3 v3.0.1
+## explicit
+gopkg.in/yaml.v3

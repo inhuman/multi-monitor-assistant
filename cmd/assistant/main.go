@@ -1,14 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"github.com/MarinX/keylogger"
 	"github.com/go-vgo/robotgo"
 	_ "github.com/go-vgo/robotgo/base"
 	_ "github.com/go-vgo/robotgo/key"
-	_ "github.com/go-vgo/robotgo/mouse"
 	_ "github.com/go-vgo/robotgo/screen"
 	_ "github.com/go-vgo/robotgo/window"
+	"github.com/robotn/xgb/xproto"
 	"github.com/robotn/xgbutil"
 	"github.com/robotn/xgbutil/ewmh"
 	"log"
@@ -23,25 +22,40 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Starting multi-monitor assistant")
-	//displaysCount := robotgo.DisplaysNum()
-	//
-	//fmt.Println("Displays count:", displaysCount)
-	//fmt.Println("Main display id:", robotgo.GetMainId())
-	//
-	//for i := 0; i < displaysCount; i++ {
-	//	x, y, w, h := robotgo.GetDisplayBounds(i)
-	//
-	//	fmt.Printf("\nDisplay %d bounds:\n", i)
-	//	fmt.Printf("x: %d\n", x)
-	//	fmt.Printf("y: %d\n", y)
-	//	fmt.Printf("w: %d\n", w)
-	//	fmt.Printf("h: %d\n", h)
-	//}
-
+	log.Println("Starting multi-monitor assistant")
 	state := NewState()
 
+	presets := []CombinationPreset{
+		{
+			Codes: []uint16{125, 103},
+			Name:  "Win + UP",
+			Action: func() error {
+				return MoveResize(-2160, -32, 2160, 1920)
+			},
+		},
+		{
+			Codes: []uint16{125, 108},
+			Name:  "Win + DOWN",
+			Action: func() error {
+				return MoveResize(-2160, 1920, 2160, 1920)
+			},
+		},
+		{
+			Codes: []uint16{125, 29},
+			Name:  "Win + L_CTRL",
+			Action: func() error {
+				pid := robotgo.GetPid()
+
+				printCurrentGeometry(pid)
+
+				return nil
+			},
+		},
+	}
+
 	InitState(state)
+	state.CurrentPressedKeys.AddPresets(presets)
+
 	PrintState(state)
 
 	k, err := keylogger.New(keyboard)
@@ -63,12 +77,13 @@ func main() {
 		switch e.Type {
 		// EvKey is used to describe state changes of keyboards, buttons, or other key-like devices.
 		// check the input_event.go for more events
-		case keylogger.EvKey:
 
+		case keylogger.EvKey:
 			// if the state of key is pressed
 			if e.KeyPress() {
 				state.CurrentPressedKeys.SetPressed(e.Code)
 				//log.Println("[event] press key:", e.KeyString(), "key code:", e.Code)
+				//log.Printf("state: %+v\n", *state.CurrentPressedKeys)
 			}
 
 			// if the state of key is released
@@ -76,6 +91,7 @@ func main() {
 				state.CurrentPressedKeys.SetReleased(e.Code)
 
 				//log.Println("[event] release key:", e.KeyString())
+				//log.Printf("state: %+v\n", *state.CurrentPressedKeys)
 				//
 				//title := robotgo.GetTitle()
 				//fmt.Println("title:", title)
@@ -118,33 +134,58 @@ func main() {
 	}
 }
 
-func ResizeWindow(pid int, width, height int) error {
-	xid, err := robotgo.GetXid(xu, pid)
+func MoveResize(x, y, w, h int) error {
+	pid := robotgo.GetPid()
+
+	log.Println("pid", pid)
+	printCurrentGeometry(pid)
+
+	xid := GetActiveWindowXid()
+
+	log.Println("resize and move")
+	err := ewmh.MoveresizeWindow(xu, xid, x, y, w, h)
 	if err != nil {
 		return err
 	}
 
-	err = ewmh.ResizeWindow(xu, xid, width, height)
-	if err != nil {
-		return err
-	}
+	printCurrentGeometry(pid)
 
 	return nil
 }
 
-func MoveWindow(pid int, x, y int) error {
-	xid, err := robotgo.GetXid(xu, pid)
-	if err != nil {
-		return err
-	}
+func printCurrentGeometry(pid int) {
+	cx, cy, cw, ch := robotgo.GetClient(pid)
 
-	err = ewmh.MoveWindow(xu, xid, x, y)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	log.Printf("x: %d\ty:%d\tw:%d\th:%d\n", cx, cy, cw, ch)
 }
+
+func GetActiveWindowXid() xproto.Window {
+	return xproto.Window(robotgo.GetActive().XWin)
+}
+
+//
+//func ResizeWindow(xid xproto.Window, width, height int) error {
+//
+//	//wmPid, err := ewmh.WmPidGet(xu, xid)
+//	//log.Println("XWin:", xid, "wmPid:", wmPid, "err:", err)
+//
+//	err := ewmh.ResizeWindow(xu, xid, width, height)
+//	if err != nil {
+//		return err
+//	}
+//
+//	return nil
+//}
+
+//func MoveWindow(xid xproto.Window, x, y int) error {
+//
+//	err = ewmh.MoveWindow(xu, xid, x, y)
+//	if err != nil {
+//		return err
+//	}
+//
+//	return nil
+//}
 
 //
 //func test1() {
