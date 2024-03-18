@@ -27,15 +27,15 @@ func main() {
 
 	presets := []CombinationPreset{
 		{
-			Codes: []uint16{125, 103},
-			Name:  "Win + UP",
+			Codes: []uint16{125, 103, 105},
+			Name:  "Win + UP + LEFT",
 			Action: func() error {
 				return MoveResize(-2160, -32, 2160, 1920)
 			},
 		},
 		{
-			Codes: []uint16{125, 108},
-			Name:  "Win + DOWN",
+			Codes: []uint16{125, 108, 105},
+			Name:  "Win + DOWN + LEFT",
 			Action: func() error {
 				return MoveResize(-2160, 1920, 2160, 1920)
 			},

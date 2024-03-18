@@ -95,9 +95,7 @@ func (cck *CurrentCombinationKeys) SetPressed(keyCode uint16) {
 
 	if cck.combinationStarted {
 		cck.keys[keyCode] = KeyPressed
-
 	}
-
 }
 
 func (cck *CurrentCombinationKeys) SetReleased(keyCode uint16) {
@@ -110,7 +108,11 @@ func (cck *CurrentCombinationKeys) SetReleased(keyCode uint16) {
 		if err != nil {
 			log.Printf("error doing action '%s': %s", preset.Name, err.Error())
 		}
+
+		cck.Flush()
 	}
+
+	// TODO: если в комбинации больше двух кнопок - третья сбрасывается
 
 	cck.Flush()
 }
@@ -126,7 +128,7 @@ func (cck *CurrentCombinationKeys) IsPreset() (CombinationPreset, bool) {
 }
 
 func (cck *CurrentCombinationKeys) Flush() {
-	//log.Printf("state: %+v\n", *cck)
+	log.Printf("state: %+v\n", *cck)
 
 	for key, status := range cck.keys {
 		if status == KeyReleased {
